@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css')}}">
+</head>
+<body>
+    <h1 class="subject">Welcome to my website</h1>
+
+    <ul>
+    <!-- <li><a href="/products">All</a></li>-->
+        <li><a href="{{ url_for('products_list')}}">All</a></li>
+        {% for c in categories_render_web %}
+        <li><a href="{{ url_for('products_list', category_id=c.id) }}">{{ c.name }}</a></li>
+<!--        <li><a href="/products?category_id={{ c.id }}">{{ c.name }}</a></li>-->
+        {% endfor %}
+    </ul>
+</body>
+</html>

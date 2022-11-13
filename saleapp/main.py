@@ -3,13 +3,12 @@ from saleapp import app
 # import modules utils để sủ dụng cho module
 from utils import load_categories, load_products, get_product_by_id
 
-
+# ================== CONTROLLER ===================
 @app.route('/')
 def home_page():
     # Đổ danh sách category
     cates = load_categories()
     return render_template('index.html', categories_render_web=cates)
-
 
 @app.route('/products')  # có thể truyền /products hoặc tên function vào url web, nên dùng (tên function để truyền) {{ url_for('<function_name>')}}
 def products_list():
@@ -30,6 +29,10 @@ def products_list():
 def product_detail(product_id):
     product = get_product_by_id(product_id)
     return render_template('product-detail.html',product=product)
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

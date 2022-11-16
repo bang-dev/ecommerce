@@ -1,23 +1,73 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css')}}">
-</head>
-<body>
-    <h1 class="subject">Welcome to my website</h1>
+<!--Kế thừa từ trang base.html-->
+{% extends 'layout/base.html' %}
 
-    <ul>
-    <!-- <li><a href="/products">All</a></li>-->
-        <li><a href="{{ url_for('products_list')}}">All</a></li>
-        {% for c in categories_render_web %}
-        <li><a href="{{ url_for('products_list', category_id=c.id) }}">{{ c.name }}</a></li>
-<!--        <li><a href="/products?category_id={{ c.id }}">{{ c.name }}</a></li>-->
+<!--Ghi đè phần header-->
+{% block title %} Home {% endblock %}
+
+<!--Ghi đè phần content-->
+{% block content %}
+<div class="content">
+    <h1 class="subject">Welcome to my website</h1>
+<div class="search-info">
+    <form >
+    <input class="input-search" type="text" name="keyword" placeholder="Thông tin tìm kiếm ..." id="">
+    <button class="btn-search" type="submit">Tìm kiếm</button>
+</form>
+
+</div>
+<p class="line"></p>
+<!--
+
+<ul>
+    &lt;!&ndash; <li><a href="/products">All</a></li>&ndash;&gt;
+    <li><a href="{{ url_for('products_list')}}">All</a></li>
+    {% for c in categories_render_web %}
+    <li><a href="{{ url_for('products_list', category_id=c.id) }}">{{ c.name }}</a></li>
+    &lt;!&ndash;        <li><a href="/products?category_id={{ c.id }}">{{ c.name }}</a></li>&ndash;&gt;
+    {% endfor %}
+</ul>
+-->
+
+<div class="container">
+    {% if products_render_web %}
+    <div class="row">
+        {% for p in products_render_web %}
+        <div class="col-md-3">
+            <div class="card">
+                <img class="card-img-top" src="{{ url_for('static',filename=p.image)}}" alt="{{ p.name }}">
+                <div class="card-body">
+                    <h4 class="card-name">{{ p.name }}</h4>
+                    <p class="card-price">{{ "{:,.0f}".format(p.price) }} VNĐ</p>
+                    <a href="#" class="btn"> Add to cart</a>
+                </div>
+            </div>
+        </div>
         {% endfor %}
-    </ul>
-</body>
-</html>
+    </div>
+    {% else %}
+    <div class="exception">
+        <script type="text/javascript">
+            var sec = 10;
+            function displayTime(){
+                sec -=1;
+                document.getElementById('secondDisplay').innerText="Quay lại trang chủ "+ sec +"."
+            }
+            setInterval(displayTime,1000);
+
+            function redirectPage(){
+                window.location.assign('/');
+            }
+            //setTimeout('redirectPage()',10000);
+            setTimeout('redirectPage()',10000);
+        </script>
+        <p><i>Không tìm thấy sản phẩm nào !!!</i></p>
+        <div id="secondDisplay"></div>
+
+    </div>
+    {% endif %}
+</div>
+
+</div>
+
+{% endblock %}
+

@@ -8,7 +8,10 @@ from utils import load_categories, load_products, get_product_by_id
 def home_page():
     # Đổ danh sách category
     cates = load_categories()
-    return render_template('index.html', categories_render_web=cates)
+    kw = request.args.get('keyword')
+    cate_id = request.args.get('category_id')
+    prods = load_products(cate_id=cate_id,kw=kw)
+    return render_template('index.html', categories_render_web=cates, products_render_web=prods)
 
 @app.route('/products')  # có thể truyền /products hoặc tên function vào url web, nên dùng (tên function để truyền) {{ url_for('<function_name>')}}
 def products_list():

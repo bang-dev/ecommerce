@@ -52,61 +52,64 @@ class Product(BaseModel):
 # Khi run thì chương trình sẽ bắt đầu tạo ánh xạ xuống database để kết nối
 if __name__ == '__main__':
     with app.app_context():
-        # db.create_all()
+        db.create_all()
         # cate1 = Category(name="Smart Phone")
         # cate2 = Category(name="Clock")
         # cate3 = Category(name="Laptop")
-        #
+        cate4 = Category(name="Headphone")
         # db.session.add(cate1)
         # db.session.add(cate2)
         # db.session.add(cate3)
+        db.session.add(cate4)
+
+        db.session.commit()
+
+        # products = [
+        #     {
+        #         "id": 1,
+        #         "name": "Samsung Galaxy Ultra S22",
+        #         "description": "Explore and download for free tons of high quality Bmw wallpapers and backgrounds! Customize your desktop, mobile phone and tablet with our wide variety of cool and interesting Bmw wallpapers and Bmw backgrounds in just a few clicks.",
+        #         "price": 25500000,
+        #         "image": "img/samsung-galaxy-ultra-s22.jpg",
+        #         "category_id": 1
+        #     },
+        #     {
+        #         "id": 2,
+        #         "name": "Clock Pro A2",
+        #         "description": "Explore and download for free tons of high quality Bmw wallpapers and backgrounds! Customize your desktop, mobile phone and tablet with our wide variety of cool and interesting Bmw wallpapers and Bmw backgrounds in just a few clicks.",
+        #         "price": 35500000,
+        #         "image": "img/wbf36t03713.000-bi5072.01a-dong-ho-nam-day-da-chong-nuoc-citizen.jpg",
+        #         "category_id": 2
+        #     },
+        #     {
+        #         "id": 3,
+        #         "name": "Rum Pro A3",
+        #         "description": "Explore and download for free tons of high quality Bmw wallpapers and backgrounds! Customize your desktop, mobile phone and tablet with our wide variety of cool and interesting Bmw wallpapers and Bmw backgrounds in just a few clicks.",
+        #         "price": 30000000,
+        #         "image": "img/NP1023-17L_Desktop_2.jpg",
+        #         "category_id": 2
+        #     },
+        #     {
+        #         "id": 4,
+        #         "name": "Macbook Pro A4",
+        #         "description": "Explore and download for free tons of high quality Bmw wallpapers and backgrounds! Customize your desktop, mobile phone and tablet with our wide variety of cool and interesting Bmw wallpapers and Bmw backgrounds in just a few clicks.",
+        #         "price": 75000000,
+        #         "image": "img/macbook-pro-16-inch-space-gray-m1-pro.jpg",
+        #         "category_id": 3
+        #     },
+        #     {
+        #         "id": 5,
+        #         "name": "Iphone 14 Pro Max",
+        #         "description": "Explore and download for free tons of high quality Bmw wallpapers and backgrounds! Customize your desktop, mobile phone and tablet with our wide variety of cool and interesting Bmw wallpapers and Bmw backgrounds in just a few clicks.",
+        #         "price": 36800000,
+        #         "image": "img/iphone-14-pro-finish-select-202209-6-7inch-gold.jpg",
+        #         "category_id": 1
+        #     }
+        # ]
+        #
+        # for p in products:
+        #     pro = Product(name=p['name'], price=p['price'], image=p['image'], description=p['description'],
+        #                   category_id=p['category_id'])
+        #     db.session.add(pro)
         #
         # db.session.commit()
-
-        products = [
-            {
-                "id": 1,
-                "name": "Samsung Galaxy Ultra S22",
-                "description": "Explore and download for free tons of high quality Bmw wallpapers and backgrounds! Customize your desktop, mobile phone and tablet with our wide variety of cool and interesting Bmw wallpapers and Bmw backgrounds in just a few clicks.",
-                "price": 25500000,
-                "image": "img/samsung-galaxy-ultra-s22.jpg",
-                "category_id": 1
-            },
-            {
-                "id": 2,
-                "name": "Clock Pro A2",
-                "description": "Explore and download for free tons of high quality Bmw wallpapers and backgrounds! Customize your desktop, mobile phone and tablet with our wide variety of cool and interesting Bmw wallpapers and Bmw backgrounds in just a few clicks.",
-                "price": 35500000,
-                "image": "img/wbf36t03713.000-bi5072.01a-dong-ho-nam-day-da-chong-nuoc-citizen.jpg",
-                "category_id": 2
-            },
-            {
-                "id": 3,
-                "name": "Rum Pro A3",
-                "description": "Explore and download for free tons of high quality Bmw wallpapers and backgrounds! Customize your desktop, mobile phone and tablet with our wide variety of cool and interesting Bmw wallpapers and Bmw backgrounds in just a few clicks.",
-                "price": 30000000,
-                "image": "img/NP1023-17L_Desktop_2.jpg",
-                "category_id": 2
-            },
-            {
-                "id": 4,
-                "name": "Macbook Pro A4",
-                "description": "Explore and download for free tons of high quality Bmw wallpapers and backgrounds! Customize your desktop, mobile phone and tablet with our wide variety of cool and interesting Bmw wallpapers and Bmw backgrounds in just a few clicks.",
-                "price": 75000000,
-                "image": "img/macbook-pro-16-inch-space-gray-m1-pro.jpg",
-                "category_id": 3
-            },
-            {
-                "id": 5,
-                "name": "Iphone 14 Pro Max",
-                "description": "Explore and download for free tons of high quality Bmw wallpapers and backgrounds! Customize your desktop, mobile phone and tablet with our wide variety of cool and interesting Bmw wallpapers and Bmw backgrounds in just a few clicks.",
-                "price": 36800000,
-                "image": "img/iphone-14-pro-finish-select-202209-6-7inch-gold.jpg",
-                "category_id": 1
-            }
-        ]
-
-        for p in products:
-            pro = Product(name=p['name'],price=p['price'],image=p['image'],description=p['description'],category_id=p['category_id'])
-            db.session.add(pro)
-        db.session.commit()

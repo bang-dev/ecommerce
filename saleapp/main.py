@@ -3,6 +3,7 @@ import math
 import cloudinary.uploader
 from flask import render_template, request, redirect, url_for
 from saleapp import app, login
+from saleapp.models import UserRole
 # import modules utils để sủ dụng cho module
 from utils import load_categories, load_products, get_product_by_id, count_products, add_user, check_login, \
     get_user_by_id
@@ -97,6 +98,20 @@ def user_login():
             err_msg = 'Username or password invalid !!!'
     return render_template('sign-in.html', err_msg=err_msg)
 
+
+@app.route('/admin-login',methods=['post'])
+def login_admin():
+    err_msg = " "
+    if request.method.__eq__('POST'):
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        user = check_login(username=username, password=password, role=UserRole.ADMIN)
+        if user:
+            # Ghi nhận trạng thái đăng nhập
+            login_user(user=user)
+
+    return redirect('/admin')
 
 @app.route('/user-logout')
 def user_logout():

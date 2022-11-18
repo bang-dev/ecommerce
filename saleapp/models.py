@@ -20,7 +20,6 @@ class BaseModel(db.Model):
     __abstract__ = True  # Giúp không cho tạo table đến mysql
     id = Column(Integer, primary_key=True, autoincrement=True)  # id kiểu số nguyên khóa chính, tự động tăng
 
-
 # Tạo class Enum phân quyền
 class UserRole(UserEnum):
     ADMIN = 1
@@ -45,6 +44,9 @@ class User(BaseModel, UserMixin):
 
 
 # ============ Many To One giữa Category và Product=============
+
+
+
 
 
 # tạo 1 class đối tượng, kế thừa từ class BaseModel

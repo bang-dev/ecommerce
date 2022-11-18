@@ -38,21 +38,20 @@ table.product{
     margin:auto;
 }
 a.menu-link{
-
-display:flex;
- font-size:1.8rem;
- color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:1.8rem;
+    color:white;
 }
 .container{
     with:80%;
     margin:15px auto 15px;
 }
 .navbar{
-    justify-content: flex-start;
     display: flex;
-    align-items: center;
-    margin: auto;
-    height: 5rem
+    height: 5rem;
+    width: 100%;
 }
 .flex, .row{
     display: flex;
@@ -81,13 +80,13 @@ display:flex;
     margin:auto;
 }
 .nav-item{
-    justify-content: center;
+justify-content: center;
     align-items: center;
-    margin: auto;
-    width: 100%;
+    /* margin: auto; */
+    width: 15%;
     height: 100%;
     display: flex;
-    border-right:2px solid white;
+    border-right: 2px solid white;
 }
 
 
@@ -133,17 +132,26 @@ textarea:focus,
 button:focus {
     outline: none;
 }
-input.input-search{
-    width:20rem;
-    height:3rem;
-    font-size:1.2rem;
-    padding-left:5px;
-    border:none;
-    border-bottom:1px solid black;
-    text-align:left;
-    margin:auto;
+input.input-name ,input.input-search{
+    width: 30rem;
+    height: 3rem;
+    font-size: 1.4rem;
+    /* padding-left: 5px; */
+    border: none;
+    border-bottom: 1px solid black;
+    text-align: left;
+    margin: auto;
     out-line:none;
 
+}
+
+input.submit-create{
+    width:20rem; height:3.5rem; display:flex; justify-content:center; align-item:center;margin:auto;
+    border:none;
+    border-radius:4px;
+}
+input.submit-create:hover{
+    background:lightblue;
 }
 
 .content{
@@ -154,6 +162,55 @@ justify-content: center;
 
 
 }
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+
+.form-sign-up{
+   width: 300px;
+    height: 400px;
+    align-item: center;
+    display: flex;
+    margin: 5rem auto;
+    font-size: 1.6rem;
+    flex-wrap: wrap;
+}
+
+.form-group{
+    width: 100%;
+    padding: 5px;
+}
+
+
+img.avatar{
+    width:40px;
+    height:40px;
+    border-radius:5px;
+    margin: auto 5px;
+    padding:2px;
+}
+
+
 
 .footer{
     background: #4e4376;

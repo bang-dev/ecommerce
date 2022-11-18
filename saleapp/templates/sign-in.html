@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %}
+{% block title %} User Login {% endblock %}
+{% block content %}
+    <div class="content">
+        <h1 style="text-align:center;color:black; margin-top:3rem;"> Sign In</h1>
+
+        {% if err_msg %}
+            <div style="color:red;">
+                <h4>{{ err_msg }}</h4>
+            </div>
+        {% endif %}
+
+
+        <form class="form-sign-up" method="post" action="{{ url_for('user_login') }}" >
+
+            <div class="form-group">
+                <label for="username">Username :</label>
+                <input type="text" id="username" class="input-name form-control" name="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password :</label>
+                <input type="password" id="password" class="input-name form-control" name="password">
+            </div>
+
+            <input type="submit" value="Login" class="submit-create">
+
+        </form>
+    </div>
+{% endblock %}

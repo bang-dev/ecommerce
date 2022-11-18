@@ -1,5 +1,5 @@
 # import data type
-from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey, Enum
 
 from sqlalchemy.orm import relationship
 
@@ -7,11 +7,41 @@ from saleapp import db, app
 
 from datetime import datetime
 
+from enum import Enum as UserEnum
+
+#import UserMixin tử flask_login để quản lý User
+from flask_login import UserMixin
+
+
+
 
 # tạo 1 class đối tượng nguồn sử dụng cho các thuộc tính dùng chung, và đc kế thừa từ class Model của db
 class BaseModel(db.Model):
     __abstract__ = True  # Giúp không cho tạo table đến mysql
     id = Column(Integer, primary_key=True, autoincrement=True)  # id kiểu số nguyên khóa chính, tự động tăng
+
+
+# Tạo class Enum phân quyền
+class UserRole(UserEnum):
+    ADMIN = 1
+    USER = 2
+
+
+# Tạo user quản lý tài khoảng account
+
+# Kế thừa BaseModel, UserMixin (tức đa kế thừa)
+class User(BaseModel, UserMixin):
+    name = Column(String(50), nullable=False)
+    username = Column(String(50), nullable=False)
+    password = Column(String(50), nullable=False)
+    avatar = Column(String(100))
+    email = Column(String(50))
+    active = Column(Boolean, default=True)
+    joined_date = Column(DateTime, default=datetime.now())
+    user_role = Column(Enum(UserRole), default=UserRole.USER)
+
+    def __str__(self):
+        return self.name
 
 
 # ============ Many To One giữa Category và Product=============
@@ -56,13 +86,13 @@ if __name__ == '__main__':
         # cate1 = Category(name="Smart Phone")
         # cate2 = Category(name="Clock")
         # cate3 = Category(name="Laptop")
-        cate4 = Category(name="Headphone")
+        #cate4 = Category(name="Headphone")
         # db.session.add(cate1)
         # db.session.add(cate2)
         # db.session.add(cate3)
-        db.session.add(cate4)
+        #db.session.add(cate4)
 
-        db.session.commit()
+        #db.session.commit()
 
         # products = [
         #     {

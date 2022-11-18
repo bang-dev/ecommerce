@@ -8,45 +8,45 @@
 {% block content %}
 <div class="content">
     <h1 class="subject">Welcome to my website</h1>
-<div class="search-info">
-    <form >
-    <input class="input-search" type="text" name="keyword" placeholder="Thông tin tìm kiếm ..." id="">
-    <button class="btn-search" type="submit">Tìm kiếm</button>
-</form>
+    <div class="search-info">
+        <form>
+            <input class="input-search" type="text" name="keyword" placeholder="Thông tin tìm kiếm ..." id="">
+            <button class="btn-search" type="submit">Tìm kiếm</button>
+        </form>
 
-</div>
-<p class="line"></p>
-<!--
+    </div>
+    <p class="line"></p>
+    <!--
 
-<ul>
-    &lt;!&ndash; <li><a href="/products">All</a></li>&ndash;&gt;
-    <li><a href="{{ url_for('products_list')}}">All</a></li>
-    {% for c in categories_render_web %}
-    <li><a href="{{ url_for('products_list', category_id=c.id) }}">{{ c.name }}</a></li>
-    &lt;!&ndash;        <li><a href="/products?category_id={{ c.id }}">{{ c.name }}</a></li>&ndash;&gt;
-    {% endfor %}
-</ul>
--->
+    <ul>
+        &lt;!&ndash; <li><a href="/products">All</a></li>&ndash;&gt;
+        <li><a href="{{ url_for('products_list')}}">All</a></li>
+        {% for c in categories_render_web %}
+        <li><a href="{{ url_for('products_list', category_id=c.id) }}">{{ c.name }}</a></li>
+        &lt;!&ndash;        <li><a href="/products?category_id={{ c.id }}">{{ c.name }}</a></li>&ndash;&gt;
+        {% endfor %}
+    </ul>
+    -->
 
-<div class="container">
-    {% if products_render_web %}
-    <div class="row">
-        {% for p in products_render_web %}
-        <div class="col-md-3">
-            <div class="card">
-                <img class="card-img-top" src="{{ url_for('static',filename=p.image)}}" alt="{{ p.name }}">
-                <div class="card-body">
-                    <h4 class="card-name">{{ p.name }}</h4>
-                    <p class="card-price">{{ "{:,.0f}".format(p.price) }} VNĐ</p>
-                    <a href="#" class="btn"> Add to cart</a>
+    <div class="container">
+        {% if products_render_web %}
+        <div class="row">
+            {% for p in products_render_web %}
+            <div class="col-md-3">
+                <div class="card">
+                    <img class="card-img-top" src="{{ url_for('static',filename=p.image)}}" alt="{{ p.name }}">
+                    <div class="card-body">
+                        <h4 class="card-name">{{ p.name }}</h4>
+                        <p class="card-price">{{ "{:,.0f}".format(p.price) }} VNĐ</p>
+                        <a href="#" class="btn"> Add to cart</a>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div class="exception">
-        <script type="text/javascript">
+        {% else %}
+        <div class="exception">
+            <script type="text/javascript">
             var sec = 10;
             function displayTime(){
                 sec -=1;
@@ -59,13 +59,23 @@
             }
             //setTimeout('redirectPage()',10000);
             setTimeout('redirectPage()',10000);
-        </script>
-        <p><i>Không tìm thấy sản phẩm nào !!!</i></p>
-        <div id="secondDisplay"></div>
 
+            </script>
+            <p><i>Không tìm thấy sản phẩm nào !!!</i></p>
+            <div id="secondDisplay"></div>
+
+        </div>
+        {% endif %}
+    </div>
+    {% if pages_render_web > 1 %}
+    <div class="pagination">
+        <a href="#">&laquo;</a>
+                {% for idx in range(1, pages_render_web+1) %}
+                     <a href="{{ url_for('home_page',page=idx)}}" class="{% if 'page' in request.args and idx == request.args.page|int %} active {% endif %}">{{ idx }}</a>
+                 {% endfor %}
+        <a href="#">&raquo;</a>
     </div>
     {% endif %}
-</div>
 
 </div>
 

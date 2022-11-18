@@ -1,0 +1,39 @@
+<div class="header">
+    <ul class="navbar">
+        <li class="nav-item {% if 'category_id' not in request.args %}active {% endif %}">
+            <a class="menu-link" href="/">Home</a>
+        </li>
+        {% for c in categories_render_web %}
+        <li class="nav-item {% if 'category_id' in request.args and c.id == request.args.category_id|int %}active{% endif %}">
+            <a class="menu-link" href="{{ url_for('home_page',category_id=c.id)}}">{{ c.name }}</a>
+        </li>
+        {% endfor %}
+
+        {% if current_user.is_authenticated %}
+            <li class="nav-item" style="float:right;">
+                <a class="menu-link" href="{{ url_for('home_page') }}" style="color:lightgreen;font-weight:bold;font-size:1.4rem;">
+                    {% if current_user.avatar %}
+                        <img class="avatar" src="{{ current_user.avatar }}" alt="{{ current_user.name }}" width="30px">
+                    {% else %}
+                        <img class="avatar" src="{{ url_for('static',filename='img/attachment_logo.png') }}" alt="{{ current_user.name }}" width="30px">
+                    {% endif %}
+
+                    {{ current_user.username }}
+                </a>
+            </li>
+             <li class="nav-item" style="float:right;">
+                <a class="menu-link" href="{{ url_for('user_logout') }}">Logout</a>
+            </li>
+        {% else %}
+             <li class="nav-item" style="float:right;">
+                <a class="menu-link" href="{{ url_for('user_login') }}">Sign In</a>
+            </li>
+             <li class="nav-item" style="float:right;">
+                <a class="menu-link" href="{{ url_for('user_register') }}">Sign Up ?</a>
+         </li>
+        {% endif %}
+
+
+
+    </ul>
+</div>

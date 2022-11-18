@@ -1,0 +1,46 @@
+{% extends 'layout/base.html' %}
+{% block title %} User Registration {% endblock %}
+{% block content %}
+    <div class="content">
+        <h1 style="text-align:center;color:black; margin-top:3rem;"> Register Account</h1>
+
+        {% if err_msg %}
+            <div style="color:red;">
+                <h4>{{ err_msg }}</h4>
+            </div>
+        {% endif %}
+
+        <!--để upload thì bắt buộc phải gắn  thuộc tính: enctype  và luôn sử dụng method là post-->
+        <form class="form-sign-up" method="post" action="{{ url_for('user_register') }}" enctype="multipart/form-data" >
+            <div class="form-group">
+                <label for="name" >Full Name :</label>
+                <input type="text" id="name" class="input-name form-control" name="name" required> <!--HTML5: required sử dụng để bát buộc nhập-->
+            </div>
+            <div class="form-group">
+                <label for="email">Email :</label>
+                <input type="email" id="email" class="input-name form-control" name="email">
+            </div>
+            <div class="form-group">
+                <label for="username">Username :</label>
+                <input type="text" id="username" class="input-name form-control" name="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password :</label>
+                <input type="password" id="password" class="input-name form-control" name="password">
+            </div>
+            <div class="form-group">
+                <label for="confirm" >Confirm Password :</label>
+                <input type="password" id="confirm" class="input-name form-control" name="confirm">
+            </div>
+
+            <div class="form-group">
+                <label for="avatar" >Avatar :</label>
+                <input type="file" id="avatar" class="input-name form-control" name="avatar">
+            </div>
+
+
+            <input type="submit" value="Create" class="submit-create">
+
+        </form>
+    </div>
+{% endblock %}

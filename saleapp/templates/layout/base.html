@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Định nghĩa : block title cha để các template con có thể override lại-->
+    <title>{% block title %} {% endblock %}</title></head>
+    <!--CSS Dùng chung-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css')}}">
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+ <!--Định nghĩa : block css cha để các template con có thể override lại-->
+    {% block css %} {% endblock %}
+ <!--Định nghĩa : block js cha để các template con có thể override lại-->
+    {% block js %} {% endblock %}
+<body>
+ <!--Định nghĩa : block header cha để các template con có thể override lại-->
+    {% block header %}
+        <!--include layout header cố định-->
+        {% include 'layout/header.html' %}
+    {% endblock %}
+
+  <!--Định nghĩa : block content cha để các template con có thể override lại-->
+    {% block content %}
+
+    {% endblock %}
+
+
+  <!--Định nghĩa : block footer cha để các template con có thể override lại-->
+    {% block footer %}
+         <!--include layout footer cố định-->
+        {% include 'layout/footer.html' %}
+    {% endblock %}
+</body>
+</html>

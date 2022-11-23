@@ -38,7 +38,8 @@ class User(BaseModel, UserMixin):
     active = Column(Boolean, default=True)
     joined_date = Column(DateTime, default=datetime.now())
     user_role = Column(Enum(UserRole), default=UserRole.USER)
-
+    receipts = relationship('Receipt',backref='user',lazy=True)
+    comments = relationship('Comment',backref='user',lazy=True)
     def __str__(self):
         return self.name
 
@@ -69,17 +70,38 @@ class Product(BaseModel):
     name = Column(String(100), nullable=False)  # name kiểu String độ dài tối đa 20 ký tự, không được phép null
     description = Column(String(255))  # description kiểu String độ dài tối đa 255 ký tự, được phép null
     price = Column(Float, default=0)  # price kiểu Float, mặc định cho bằng 0
-    image = Column(String(100))  # image kiểu String độ dài tối đa 100 ký tự, được phép null
+    image = Column(String(255))  # image kiểu String độ dài tối đa 100 ký tự, được phép null
     active = Column(Boolean, default=True)  # active kiểu luận lý, bật True
     created_date = Column(DateTime, default=datetime.now())  # created_date kiểu Datetime, mặc định lấy ngày hiện hành
     # thiết lập khóa ngoại , không được phép null
     category_id = Column(Integer, ForeignKey(Category.id), nullable=False)
 
+    receipt_details= relationship('ReceiptDetail',backref='product',lazy=True)
     # override to string, lấy theo name
+
+    comments = relationship('Comment',backref='product',lazy=True)
     def __str__(self):
         return self.name
 
+class Comment(BaseModel):
+    content = Column(String(255), nullable=False)
+    product_id = Column(Integer,ForeignKey(Product.id),nullable=False)
+    user_id = Column(Integer,ForeignKey(User.id),nullable=False)
+    created_date = Column(DateTime,default=datetime.now())
 
+    def __str__(self):
+        return self.content
+
+class Receipt(BaseModel):
+    created_date = Column(DateTime, default=datetime.now())
+    user_id = Column(Integer,ForeignKey(User.id),nullable=False)
+    details = relationship('ReceiptDetail',backref='receipt',lazy=True)
+class ReceiptDetail(BaseModel):
+    receipt_id = Column(Integer,ForeignKey(Receipt.id),nullable=False,primary_key=True)
+    product_id = Column(Integer,ForeignKey(Product.id),nullable=False,primary_key=True)
+
+    quantity = Column(Integer,default=0)
+    unit_price = Column(Float,default=0)
 # thực thi tạo các bảng dữ liệu từ class đã khai báo bên trên
 # Khi run thì chương trình sẽ bắt đầu tạo ánh xạ xuống database để kết nối
 if __name__ == '__main__':

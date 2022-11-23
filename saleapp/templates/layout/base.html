@@ -10,6 +10,9 @@
     <!--CSS Dùng chung-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css')}}">
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js" ></script>
  <!--Định nghĩa : block css cha để các template con có thể override lại-->
     {% block css %} {% endblock %}
  <!--Định nghĩa : block js cha để các template con có thể override lại-->

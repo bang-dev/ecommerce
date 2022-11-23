@@ -1,0 +1,219 @@
+{% extends 'admin/base.html' %}
+
+
+{% block body %}
+<style>
+    table{
+    display: flex;
+    align-items: center;
+    margin: 5rem auto;
+    justify-content: center;
+    border-collapse:collapse;
+    width:40%;height:120px;
+    font-size:60%;
+    font-weight:bold;
+}
+
+
+
+
+table, th, td{
+    border-top:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+    padding: 5px 70px;
+}
+tr:hover{
+    cursor:pointer;
+}
+table tr:nth-child(odd){
+    background-color:#eee;
+    color:black;
+}
+
+table tr:nth-child(odd):hover{
+    background:#52796f;
+}
+table tr:nth-child(even):hover{
+    background:#386641;
+    color:white;
+}
+table tr:nth-child(even){
+    background:white;
+    color:black;
+}
+
+table tr:nth-child(1):hover{
+    background-color:lightgreen;
+}
+table tr:nth-child(1){
+    background-color:skyblue;
+    color:black;
+}
+
+
+.row-admin{
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    min-width: 100vh;
+}
+.left{
+    min-width:50%;
+}
+.right{
+    min-width:50%;
+}
+
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+input.input-keyword{
+border: none;
+    border-bottom: 1px solid gray;
+    text-align: left;
+    margin: auto;
+    out-line:none;
+
+}
+
+
+
+</style>
+
+<h1 style="text-align:center;color:black;margin-bottom:3rem;">Statistics</h1>
+<div class="row-admin">
+    <div class="left">
+        <table>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Statistic</th>
+            </tr>
+            {% for s in statistic_prod_render_web %}
+            <tr>
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }}</td>
+                <td>{{ "{:,.0f}".format(s[2]) }} ( VNĐ )</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="right">
+            <form style="display: flex;justify-content: center;margin: auto;align-items: center;float: left;">
+                <div style="margin-left:1rem;">
+                    <input class="input-keyword" type="text" name="kw" placeholder="Enter keyword ..."/>
+                </div>
+                <div style="margin-left:1rem;">
+                    <label>From date: </label>
+                    <input class="input-keyword" type="date" name="from_date" placeholder="Enter from date ..."/>
+                </div>
+                <div style="margin-left:1rem;">
+                    <label>To date: </label>
+                    <input class="input-keyword" type="date" name="to_date" placeholder="Enter to date ..."/>
+                </div>
+                <input style="width:8rem ;margin-left:1rem; border:none;background:lightgreen;color:white;border-radius:5px;" type="submit" value="Statistic"/>
+            </form>
+            <canvas style="width:100%;" id="productChart"></canvas>
+    </div>
+</div>
+
+<div>
+    <div>
+        <table>
+            <tr>
+                <th>Month</th>
+                <th>Statistic</th>
+            </tr>
+            {% for s in month_statistic_render_web %}
+            <tr>
+                <td>{{ s[0] }}</td>
+                <td>{{ "{:,.0f}".format(s[1]) }} ( VNĐ )</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row-admin">
+        <div class="left">
+            <canvas id="productMonthChart"></canvas>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+let labels = [], labels2 = []
+let data = [], data2 = []
+let colors = [], colors2 = []
+let borderColors = [], borderColors2 = []
+let r,g,b;
+{% for s in statistic_prod_render_web %}
+    {% if s[2] %}
+    labels.push('{{ s[1] }}')
+    data.push({{ s[2] }})
+    r = Math.random()*255
+    g = Math.random()*255
+    b = Math.random()*255
+
+    colors.push(`rgba(${r},${g},${b},0.2)`)
+    borderColors.push(`rgba(${r},${g},${b},1)`)
+    {% endif %}
+{% endfor %}
+
+
+
+{% for s in month_statistic_render_web %}
+
+    labels2.push({{ s[0] }})
+    data2.push({{ s[1] }})
+    r = Math.random()*255
+    g = Math.random()*255
+    b = Math.random()*255
+
+    colors2.push(`rgba(${r},${g},${b},0.2)`)
+    borderColors2.push(`rgba(${r},${g},${b},1)`)
+{% endfor %}
+
+
+window.onload = function(){
+     const ctx = document.getElementById('productChart').getContext('2d')
+     const ctx2 = document.getElementById('productMonthChart').getContext('2d')
+    loadChart(ctx,labels,data,'bar',colors,borderColors)
+    loadChart(ctx2,labels2,data2,'bar',colors2,borderColors2)
+
+}
+
+
+
+ function loadChart(ctx,labels,data,type,color,borderColors){
+    const myChart = new Chart(ctx, {
+    type: type,
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Statistics of products by category',
+        data: data,
+        backgroundColor:colors,
+        borderColor:borderColors,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+ }
+</script>
+
+{% endblock %}

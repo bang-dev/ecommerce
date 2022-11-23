@@ -126,12 +126,8 @@ button.btn-search:hover{
     background:lightblue;
 }
 
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-    outline: none;
-}
+
+
 input.input-name ,input.input-search{
     width: 30rem;
     height: 3rem;
@@ -144,6 +140,10 @@ input.input-name ,input.input-search{
     out-line:none;
 
 }
+
+
+
+
 
 input.submit-create{
     width:20rem; height:3.5rem; display:flex; justify-content:center; align-item:center;margin:auto;
@@ -210,6 +210,65 @@ img.avatar{
     padding:2px;
 }
 
+
+.span-cart{
+    color: red;
+    padding: 2px;
+    font-size: 1.4rem;
+    transform: translate(4px, -7px);
+    border: 0.5px solid white;
+    border-radius: 18px;
+    width: 19px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background: aquamarine;
+    font-weight: 800;
+}
+table{
+    display: flex;
+    align-items: center;
+    margin: 5rem auto;
+    justify-content: center;
+    border-collapse:collapse;
+    width:100%;height:300px
+}
+
+
+
+
+table, th, td{
+    border-top:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+    padding: 10px 90px;
+}
+tr:hover{
+    cursor:pointer;
+}
+table tr:nth-child(odd){
+    background-color:#eee;
+    color:black;
+}
+
+table tr:nth-child(odd):hover{
+    background:#52796f;
+}
+table tr:nth-child(even):hover{
+    background:#386641;
+    color:white;
+}
+table tr:nth-child(even){
+    background:white;
+    color:black;
+}
+
+table tr:nth-child(1):hover{
+    background-color:lightgreen;
+}
+table tr:nth-child(1){
+    background-color:skyblue;
+    color:black;
+}
 
 
 .footer{

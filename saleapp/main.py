@@ -1,13 +1,13 @@
 import math
 
 import cloudinary.uploader
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, session, jsonify
 from saleapp import app, login
 from saleapp.models import UserRole
 # import modules utils để sủ dụng cho module
 from utils import load_categories, load_products, get_product_by_id, count_products, add_user, check_login, \
-    get_user_by_id
-from flask_login import login_user, logout_user
+    get_user_by_id, count_cart, add_receipt, add_comment_product, get_comment_product, count_comment
+from flask_login import login_user, logout_user, login_required
 
 
 # ================== CONTROLLER ===================
@@ -44,10 +44,12 @@ def products_list():
     return render_template('products.html', products_render_web=pros)
 
 
-@app.route('/products/<product_id>')
+@app.route('/products/<int:product_id>')
 def product_detail(product_id):
     product = get_product_by_id(product_id)
-    return render_template('product-detail.html', product=product)
+    counter = count_comment(product_id=product_id)
+    return render_template('product-detail.html', product=product,
+                           pages_render_web=math.ceil(counter / app.config['COMMENT_SIZE']))
 
 
 # Hổ trợ thêm 2 method GET and POST
@@ -89,17 +91,18 @@ def user_login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        user = check_login(username=username, password=password)
+        user = check_login(username=username, password=password, role=UserRole.ADMIN)
         if user:
             # Ghi nhận trạng thái đăng nhập
             login_user(user=user)
-            return redirect(url_for('home_page'))
+            next = request.args.get('next', 'home_page')
+            return redirect(url_for(next))
         else:
             err_msg = 'Username or password invalid !!!'
     return render_template('sign-in.html', err_msg=err_msg)
 
 
-@app.route('/admin-login',methods=['post'])
+@app.route('/admin-login', methods=['post'])
 def login_admin():
     err_msg = " "
     if request.method.__eq__('POST'):
@@ -113,6 +116,7 @@ def login_admin():
 
     return redirect('/admin')
 
+
 @app.route('/user-logout')
 def user_logout():
     logout_user()
@@ -122,13 +126,116 @@ def user_logout():
 @app.context_processor  # gắn tất cả các response trên hệ thống website
 def common_response():
     return {
-        'categories_render_web': load_categories()
+        'categories_render_web': load_categories(),
+        'card_stats_render_web': count_cart(session.get('cart'))
     }
 
 
 @login.user_loader
 def user_load(user_id):
     return get_user_by_id(user_id=user_id)
+
+
+@app.route('/api/add-cart', methods=['post'])
+def add_to_cart():
+    data = request.json
+    id = str(data.get('id'))
+    name = data.get('name')
+    price = data.get('price')
+
+    # debug code
+    # import pdb
+    # pdb.set_trace()
+
+    cart = session.get('cart')
+    if not cart:
+        cart = {}
+    if id in cart:
+        cart[id]['quantity'] = cart[id]['quantity'] + 1
+    else:
+        cart[id] = {
+            'id': id,
+            'name': name,
+            'price': price,
+            'quantity': 1
+        }
+    session['cart'] = cart
+
+    return jsonify(count_cart(cart))
+
+@app.route('/api/update-cart',methods=['put'])
+def update_cart():
+    data = request.json
+    id = str(data.get('id'))
+    quantity = data.get('quantity')
+
+    cart = session.get('cart')
+    if cart and id in cart:
+        cart[id]['quantity'] += quantity
+        session['cart'] = cart
+    return jsonify(count_cart(cart))
+
+
+@app.route('/api/payment', methods=['post'])
+@login_required
+def payment():
+    try:
+        add_receipt(session.get('cart'))
+        del session['cart']
+    except:
+        return jsonify({'code': 400})
+    return jsonify({'code': 200})
+
+
+@app.route('/api/comments', methods=['post'])
+@login_required
+def add_comment():
+    data = request.json
+    content = data.get('content')
+    product_id = data.get('product_id')
+    try:
+        c = add_comment_product(content=content, product_id=product_id)
+    except:
+        return {'status': 404, 'err_msg': 'Failed !!!'}
+
+    return {
+        'status': 201,
+        'comment': {
+            'id': c.id,
+            'content': c.content,
+            'created_date': str(c.created_date),
+            'user': {
+                'id': c.user.id,
+                'username': c.user.username,
+                'avatar': c.user.avatar
+            }
+        }}
+
+
+@app.route('/api/products/<product_id>/comments')
+def get_comments(product_id):
+    page = request.args.get('page', 1)
+    comments = get_comment_product(product_id=product_id, page=int(page))
+
+    results = []
+    for c in comments:
+        results.append({
+            'id': c.id,
+            'content': c.content,
+            'created_date': str(c.created_date),
+            'user': {
+                'id': c.user.id,
+                'username': c.user.username,
+                'avatar': c.user.avatar
+            }
+        })
+    return jsonify(results)
+
+
+@app.route('/cart')
+def cart():
+    return render_template('cart.html', stats=count_cart(session.get('cart')))
+
 
 
 if __name__ == '__main__':

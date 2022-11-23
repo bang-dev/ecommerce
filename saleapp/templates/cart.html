@@ -1,0 +1,63 @@
+{% extends 'layout/base.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+    <style>
+        .btn-payment{
+            background:lightgreen;
+            font-size:1.6rem;
+            padding:1rem 5rem;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            margin:2rem auto;
+            border:none;
+            border-radius:5px;
+        }
+        .btn-payment:hover{
+            background:orange;
+        }
+    </style>
+    <h1 style="text-align:center; color:black; margin-top:5rem;">Cart</h1>
+{% if 'cart' in session and session['cart'] %}
+<div class="body-cart">
+    <table class="table-cart">
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th></th>
+        </tr>
+        {% for c in session['cart'].values() %}
+        <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.name }}</td>
+            <td>{{ "{:,.0f}".format(c.price) }} (VNĐ)</td>
+            <td>
+                <div>
+                    <input type="number" onblur="updateCart({{ c.id }}, this)" min="1" value=" {{ c.quantity }}" style="width:50px;color:black;" />
+                </div>
+            </td>
+            <td>
+                <input type="button" value="Delete" style="background:red;color:white;border:none;padding:5px;cursor:pointer;">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div style="text-align:center;color:black;">
+        <h5 style="margin-bottom:5px;">Products total: <span class="cart-counter" style="color:red;">{{ stats.total_quantity }}</span></h5>
+        <h5>Total amount: <span id="total-amount" style="color:green;">{{ "{:,.0f}".format(stats.total_amount) }}</span> ( VNĐ )</h5>
+    </div>
+    {% if current_user.is_authenticated %}
+        <div>
+            <input class="btn-payment" type="button" value="Payment" onclick="paymentHandle()" />
+        </div>
+    {% else %}
+        <a href="{{ url_for('user_login', next='cart') }}" >Login to payment ...</a>
+    {% endif %}
+</div>
+
+{% else %}
+    <h4>Product is empty in cart !!!</h4>
+{% endif %}
+{% endblock %}

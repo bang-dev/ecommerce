@@ -1,21 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Product Detail</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css')}}">
-</head>
-<body>
-    <h1 class="subject">Product Detail </h1>
-    <div class="container flex">
-        <div>
-            <img src="{{ url_for('static',filename=product.image) }}" alt="{{ product.name }}"/>
-        </div>
-        <div>
-            <h2>{{product.name}}</h2>
-            <p>{{ product.description}}</p>
-            <h4>{{ "{:,.1f}".format(product.price)}}</h4>
-        </div>
+{% extends 'layout/base.html' %}
+
+{% block title %}Product Detail{% endblock %}
+
+{% block content %}
+<h1 class="subject">Product Detail </h1>
+<div class="container flex">
+    <div>
+        <img src="{{ url_for('static',filename=product.image) }}" alt="{{ product.name }}"/>
     </div>
-</body>
-</html>
+    <div>
+        <h2>{{product.name}}</h2>
+        <p>{{ product.description}}</p>
+        <h4>{{ "{:,.1f}".format(product.price)}}</h4>
+    </div>
+
+
+    {% if current_user.is_authenticated %}
+    <div>
+        <div>
+        <textarea id="commentInfo" style="width:60rem;padding:5px; " class="form-control"
+                  placeholder="Comment about product ..."></textarea>
+            <input onclick="addComment({{ product.id }})" type="button" value="Send comment"
+                   style="text-align: center;display: flex;width: 11rem;padding: 6px;"/>
+        </div>
+
+
+    </div>
+    {% else %}
+    <div>
+        <a href="{{ url_for('user_login',next='product_detail',product_id=product_id) }}"
+           style="margin:10rem;color:red;">Login to comment !!!</a>
+
+
+        {% endif %}
+        <br><br>
+        <div id="commentArea">
+
+        </div>
+        <div id="commentArea2">
+
+        </div>
+
+        {% if pages_render_web > 1 %}
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            {% for idx in range(1, pages_render_web+1) %}
+            <a href="javascript:;" onclick="loadComments({{ product.id }},{{ idx }})"
+               class="{% if 'page' in request.args and idx == request.args.page|int %} active {% endif %}">{{ idx }}</a>
+            {% endfor %}
+            <a href="#">&raquo;</a>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+<script>
+    window.onload = function(){
+       loadComments({{ product.id }})
+    }
+
+</script>
+{% endblock %}

@@ -13,7 +13,7 @@
             <li class="nav-item" style="float:right;">
                 <a class="menu-link" href="{{ url_for('home_page') }}" style="color:lightgreen;font-weight:bold;font-size:1.4rem;">
                     {% if current_user.avatar %}
-                        <img class="avatar" src="{{ current_user.avatar }}" alt="{{ current_user.name }}" width="30px">
+                        <img class="avatar" src="{{ current_user.avatar }}" alt="{{ current_user.name }}" style="width=40px;height:40px;border-radius:50%;">
                     {% else %}
                         <img class="avatar" src="{{ url_for('static',filename='img/attachment_logo.png') }}" alt="{{ current_user.name }}" width="30px">
                     {% endif %}
@@ -32,6 +32,10 @@
                 <a class="menu-link" href="{{ url_for('user_register') }}">Sign Up ?</a>
          </li>
         {% endif %}
+        <li class="nav-item" style="float:right;">
+                <a class="menu-link" href="{{ url_for('cart') }}">Cart <span class="span-cart cart-counter" >{{ card_stats_render_web.total_quantity }}</span></a>
+             <!--<a class="menu-link" href="{{ url_for('cart') }}">Cart <span class="span-cart" id="cartCounter">{{ card_stats_render_web.total_quantity }}</span></a>-->
+        </li>
 
 
 

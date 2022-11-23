@@ -9,6 +9,7 @@ import cloudinary
 #import LoginManager để quản lý đăng nhập
 from flask_login import LoginManager
 
+
 # thiết lập cấu hình app
 app = Flask(__name__)
 
@@ -18,6 +19,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:abc123@localhost/d
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 # Cấu hình hiển thị số lượng tối đa mỗi 1 trang page
 app.config['PAGE_SIZE'] = 2
+app.config['COMMENT_SIZE'] = 5
 # thiết lập cấu hình tương tác database
 db = SQLAlchemy(app=app)
 
